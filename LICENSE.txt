@@ -1,35 +1,396 @@
- 
+// Tables\Actions\Action::make('edit_run')
+                //     ->label(__('Edit Run'))
+                //     ->icon('heroicon-o-pencil')
+                //     ->color('info')
+                //     ->modalHeading(__('Edit Run'))
+                //     ->mountUsing(function (Forms\ComponentContainer $form, Model $record) {
+                //         $days = collect($record->days ?? [])->map(function ($day) {
+                //             return [
+                //                 'day' => $day['day'] ?? null,
+                //                 'start_time' => $day['start_time'] ?? null,
+                //                 'end_time' => $day['end_time'] ?? null,
+                //             ];
+                //         })->toArray();
 
- => FREE HTML TEMPLATE LICENSE BY HTML Codex
+                //         $form->fill([
+                //             'start_date' => $record->start_date,
+                //             'end_date' => $record->end_date,
+                //             'class_room' => $record->class_room,
+                //             'hours' => $record->hours,
+                //             'num_of_days' => $record->num_of_days,
+                //             'plant_id' => $record->plant_id,
+                //             'days' => $days,
+                //             'num_of_employees' => $record->employees()->count(),
+                //             'employees' => $record->employees->pluck('id')->toArray(),
+                //             'plan_topic_id' => $record->plan_topic_id,
+                //             'country_id' => auth()->user()->country_id,
+                //         ]);
+                //     })
+                //     ->form([
+                //         Hidden::make('country_id')
+                //             ->default(auth()->user()->country_id),
+                //         // Hidden::make('plan_topic_id')->default($record->plan_topic_id),
 
- All Reshaping the Energy Landscape Together by HTML Codex are licensed under a Creative Commons Attribution 4.0 International License which means you are not allowed to remove the author�s credit link/attribution link/backlink.
+                //         Grid::make(3)->schema([
+                //                 Forms\Components\TextInput::make('hours')
+                //                     ->label(__('Hours'))
+                //                     ->numeric()
+                //                     ->required(),
 
- When you download or use our Reshaping the Energy Landscape Together, it will attribute the following conditions.
+                //                 Forms\Components\TextInput::make('num_of_days')
+                //                     ->label(__('Number of Days'))
+                //                     ->numeric()
+                //                     ->required(),
 
+                //                 Forms\Components\TextInput::make('num_of_employees')
+                //                     ->numeric()
+                //                     ->required()
+                //                     ->label(__('Number of Employees'))
+                //                     ->reactive()
+                //                     ->afterStateUpdated(function ($state, callable $set) {
+                //                         // Clear employee selection when number changes
+                //                         $set('employees', []);
+                //                     }),
+                //             ]),
+                //         Forms\Components\Grid::make()
+                //             ->schema([
+                //                 Forms\Components\DatePicker::make('start_date')
+                //                     ->required()
+                //                     ->label(__('Start Date')),
 
- => YOU ARE ALLOWED
+                //                 Forms\Components\DatePicker::make('end_date')
+                //                     ->required()
+                //                     ->label(__('End Date')),
+                //             ])
+                //             ->columns(2),
 
-      1. You are allowed to use for your personal and commercial purposes.
+                //         Forms\Components\Grid::make()
+                //             ->schema([
+                //                 Forms\Components\TextInput::make('class_room')
+                //                     ->label(__('Classroom')),
 
-      2. You are allowed to modify/customize however you like.
+                //                 Forms\Components\Select::make('plant_id')
+                //                     ->label(__('Plant'))
+                //                     ->options(Plant::pluck('name', 'id'))
+                //                     ->searchable(),
+                //             ])
+                //             ->columns(2),
 
-      3. You are allowed to convert/port for use for any CMS.
+                //             Forms\Components\Section::make('Select Employees')->schema([
+                //                     Select::make('filter_job_title_ids')
+                //                         ->label(__('Filter by Job Title'))
+                //                         ->options(function () {
+                //                             return \App\Models\JobTitle::where('country_id', auth()->user()->country_id)
+                //                                 ->pluck('name', 'id')
+                //                                 ->toArray();
+                //                         })
+                //                         ->default(function (Forms\Get $get, $livewire) {
+                //                             $record = $livewire->getOwnerRecord();
+                //                             $planTopic = $record->planTopic;
+                //                             if ($planTopic && $planTopic->topic) {
+                //                                 return $planTopic->topic->jobTitles()->pluck('job_titles.id')->toArray();
+                //                             }
 
-      4. You are allowed to share/distribute under the HTML Codex brand name.
+                //                             if ($planTopic && $planTopic->topic_id) {
+                //                                 return \Illuminate\Support\Facades\DB::table('job_title_topic')
+                //                                     ->where('topic_id', $planTopic->topic_id)
+                //                                     ->pluck('job_title_id')
+                //                                     ->toArray();
+                //                             }
 
-      5. You are allowed to put a screenshot or a link on your blog posts or any other websites.
+                //                             return [];
+                //                         })
+                //                         ->multiple()
+                //                         ->searchable()
+                //                         ->placeholder(__('All Job Titles'))
+                //                         ->reactive()
+                //                         ->columnSpanFull(),
 
+                //                     Grid::make(3)->schema([
+                //                         Select::make('filter_category_id')
+                //                             ->label(__('Filter by Category'))
+                //                             ->options(fn () => \App\Models\Category::where('parent_id', null)
+                //                                 ->where('country_id', auth()->user()->country_id)
+                //                                 ->pluck('name', 'id')
+                //                                 ->toArray())
+                //                             ->preload()
+                //                             ->searchable()
+                //                             ->placeholder(__('All Categories'))
+                //                             ->reactive()
+                //                             ->afterStateUpdated(fn (callable $set) => $set([
+                //                                 'filter_department_id' => null,
+                //                                 'filter_sub_department_id' => null
+                //                             ])),
 
- => YOU ARE NOT ALLOWED
+                //                         Select::make('filter_department_id')
+                //                             ->label(__('Filter by Department'))
+                //                             ->options(function (callable $get) {
+                //                                 $categoryId = $get('filter_category_id');
+                //                                 return $categoryId
+                //                                     ? \App\Models\Category::where('parent_id', $categoryId)
+                //                                         ->where('country_id', auth()->user()->country_id)
+                //                                         ->pluck('name', 'id')
+                //                                         ->toArray()
+                //                                     : [];
+                //                             })
+                //                             ->searchable()
+                //                             ->placeholder(__('Select Department'))
+                //                             ->reactive()
+                //                             ->disabled(fn (callable $get) => !$get('filter_category_id'))
+                //                             ->afterStateUpdated(fn (callable $set) => $set('filter_sub_department_id', null)),
 
-      1. You are not allowed to remove the author�s credit link/attribution link/backlink without purchasing Credit Removal License ( https://htmlcodex.com/credit-removal ).
+                //                         Select::make('filter_sub_department_id')
+                //                             ->label(__('Filter by Sub-Department'))
+                //                             ->options(function (callable $get) {
+                //                                 $departmentId = $get('filter_department_id');
+                //                                 return $departmentId
+                //                                     ? \App\Models\Category::where('parent_id', $departmentId)
+                //                                         ->where('country_id', auth()->user()->country_id)
+                //                                         ->pluck('name', 'id')
+                //                                         ->toArray()
+                //                                     : [];
+                //                             })
+                //                             ->searchable()
+                //                             ->placeholder(__('Select Sub-Department'))
+                //                             ->reactive()
+                //                             ->disabled(fn (callable $get) => !$get('filter_department_id')),
+                //                     ]),
 
-      2. You are not allowed to sell, resale, rent, lease, license, or sub-license.
+                //                     Select::make('employees')
+                //                         ->label(__('Employees'))
+                //                         ->multiple()
+                //                         ->preload()
+                //                         ->options(function (callable $get, $livewire) {
+                //                             $record = $livewire->getOwnerRecord();
+                //                             $query = \App\Models\Employee::query()
+                //                                 ->where('country_id', auth()->user()->country_id);
 
-      3. You are not allowed to upload on your template websites or template collection websites or any other third party websites without our permission.
+                //                             // Apply filter based on selected job titles
+                //                             if ($jobTitleIds = $get('filter_job_title_ids')) {
+                //                                 $query->whereIn('job_title_id', (array) $jobTitleIds);
+                //                             }
 
- This license can be terminated if you breach any of these conditions.
+                //                             // Apply filter based on hierarchical categories
+                //                             if ($subId = $get('filter_sub_department_id')) {
+                //                                 $query->where('sub_department_id', $subId);
+                //                             } elseif ($deptId = $get('filter_department_id')) {
+                //                                 $query->where('department_id', $deptId);
+                //                             } elseif ($catId = $get('filter_category_id')) {
+                //                                 $query->where('category_id', $catId);
+                //                             }
 
- Please contact us (https://htmlcodex.com/contact) if you have any query.
+                //                             // If related to a plan topic, apply additional filters
+                //                             $planTopic = $record->planTopic;
+                //                             if ($planTopic && empty($get('filter_job_title_ids')) &&
+                //                                 empty($get('filter_category_id')) &&
+                //                                 empty($get('filter_department_id')) &&
+                //                                 empty($get('filter_sub_department_id'))) {
 
- => PURCHASE CREDIT REMOVAL LICENSE ( https://htmlcodex.com/credit-removal )
+                //                                 // Filter by job titles related to the topic
+                //                                 if ($planTopic->topic) {
+                //                                     $topicJobTitleIds = $planTopic->topic->jobTitles()->pluck('job_titles.id')->toArray();
+                //                                     if (!empty($topicJobTitleIds)) {
+                //                                         $query->whereIn('job_title_id', $topicJobTitleIds);
+                //                                     }
+                //                                 }
+
+                //                                 // Filter by category if available
+                //                                 if ($planTopic->category_id) {
+                //                                     $category = \App\Models\Category::find($planTopic->category_id);
+                //                                     if ($category) {
+                //                                         if ($category->level === 'category') {
+                //                                             $query->where('category_id', $planTopic->category_id);
+                //                                         } elseif ($category->level === 'department') {
+                //                                             $query->where('department_id', $planTopic->category_id);
+                //                                         } elseif ($category->level === 'sub_department') {
+                //                                             $query->where('sub_department_id', $planTopic->category_id);
+                //                                         }
+                //                                     }
+                //                                 }
+                //                             }
+
+                //                             return $query->pluck('name', 'id')->toArray();
+                //                         })
+                //                         ->default(function (Forms\Get $get, $livewire) {
+                //                             $record = $livewire->getOwnerRecord();
+                //                             return $record->employees->pluck('id')->toArray();
+                //                         })
+                //                         ->searchable()
+                //                         ->required()
+                //                         ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                //                             $limit = (int) $get('num_of_employees');
+                //                             if (is_array($state) && count($state) > $limit) {
+                //                                 $set('employees', array_slice($state, 0, $limit));
+                //                             }
+                //                         })
+                //                         ->rules([
+                //                             function ($get) {
+                //                                 return function (string $attribute, $value, \Closure $fail) use ($get) {
+                //                                     $expected = (int) $get('num_of_employees');
+                //                                     if (count((array) $value) !== $expected) {
+                //                                         $fail(__('You must select exactly :num employees.', ['num' => $expected]));
+                //                                     }
+                //                                 };
+                //                             }
+                //                         ])
+                //                         ->helperText(function (Forms\Get $get, $livewire) {
+                //                             $record = $livewire->getOwnerRecord();
+                //                             $num = (int) $get('num_of_employees');
+
+                //                             // Build query with all active filters
+                //                             $query = \App\Models\Employee::query()
+                //                                 ->where('country_id', auth()->user()->country_id);
+
+                //                             // Apply job title filter
+                //                             $jobTitleIds = $get('filter_job_title_ids');
+                //                             if (!empty($jobTitleIds)) {
+                //                                 $query->whereIn('job_title_id', (array) $jobTitleIds);
+
+                //                                 // Get job title names for display
+                //                                 $jobTitleNames = \App\Models\JobTitle::whereIn('id', (array) $jobTitleIds)
+                //                                     ->pluck('name')
+                //                                     ->implode(', ');
+
+                //                                 $jobTitleText = "job titles: {$jobTitleNames}";
+                //                             }
+
+                //                             // Apply category filters
+                //                             $categoryId = $get('filter_category_id');
+                //                             $departmentId = $get('filter_department_id');
+                //                             $subDepartmentId = $get('filter_sub_department_id');
+
+                //                             if ($subDepartmentId) {
+                //                                 $query->where('sub_department_id', $subDepartmentId);
+                //                                 $filterName = \App\Models\Category::find($subDepartmentId)?->name ?? 'this sub-department';
+                //                             } elseif ($departmentId) {
+                //                                 $query->where('department_id', $departmentId);
+                //                                 $filterName = \App\Models\Category::find($departmentId)?->name ?? 'this department';
+                //                             } elseif ($categoryId) {
+                //                                 $query->where('category_id', $categoryId);
+                //                                 $filterName = \App\Models\Category::find($categoryId)?->name ?? 'this category';
+                //                             } else {
+                //                                 // If no specific filter is applied
+                //                                 $filterName = 'all categories';
+
+                //                                 // Apply plan topic filters if available
+                //                                 $planTopic = $record->planTopic;
+                //                                 if ($planTopic && $planTopic->category_id) {
+                //                                     $category = \App\Models\Category::find($planTopic->category_id);
+                //                                     if ($category) {
+                //                                         $filterName = $category->name ?? 'selected category';
+
+                //                                         if ($category->level === 'category') {
+                //                                             $query->where('category_id', $planTopic->category_id);
+                //                                         } elseif ($category->level === 'department') {
+                //                                             $query->where('department_id', $planTopic->category_id);
+                //                                         } elseif ($category->level === 'sub_department') {
+                //                                             $query->where('sub_department_id', $planTopic->category_id);
+                //                                         }
+                //                                     }
+                //                                 }
+                //                             }
+
+                //                             // Append job title to filter description if selected
+                //                             if (!empty($jobTitleIds) && isset($jobTitleText)) {
+                //                                 $filterName .= " with {$jobTitleText}";
+                //                             }
+
+                //                             $count = $query->count();
+
+                //                             return __('Please select exactly :num employees for this run. (:available available in :filter)', [
+                //                                 'num' => $num,
+                //                                 'available' => $count,
+                //                                 'filter' => $filterName
+                //                             ]);
+                //                         })->columnSpanFull(),
+                //                 ]),
+                //         Forms\Components\Section::make(__('Training Days'))
+                //             ->schema([
+                //                 Forms\Components\Repeater::make('days')
+                //                     ->schema([
+                //                         Forms\Components\Grid::make()
+                //                             ->schema([
+                //                                 Forms\Components\DatePicker::make('day')
+                //                                     ->required()
+                //                                     ->label(__('Date')),
+
+                //                                 Forms\Components\TimePicker::make('start_time')
+                //                                     ->seconds(false)
+                //                                     ->label(__('Start Time'))
+                //                                     ->reactive()
+                //                                     ->afterStateUpdated(function ($state, callable $set) {
+                //                                         // Convert time to integer format if needed
+                //                                         if ($state) {
+                //                                             $time = Carbon::parse($state);
+                //                                             $intTime = $time->hour * 100 + $time->minute;
+                //                                             $set('start_time_int', $intTime);
+                //                                         }
+                //                                     }),
+
+                //                                 Forms\Components\TimePicker::make('end_time')
+                //                                     ->seconds(false)
+                //                                     ->label(__('End Time'))
+                //                                     ->reactive()
+                //                                     ->afterStateUpdated(function ($state, callable $set) {
+                //                                         // Convert time to integer format if needed
+                //                                         if ($state) {
+                //                                             $time = Carbon::parse($state);
+                //                                             $intTime = $time->hour * 100 + $time->minute;
+                //                                             $set('end_time_int', $intTime);
+                //                                         }
+                //                                     }),
+
+                //                                 Forms\Components\Hidden::make('start_time_int'),
+                //                                 Forms\Components\Hidden::make('end_time_int'),
+                //                             ])
+                //                             ->columns(3),
+                //                     ])
+                //                     ->label(__('Training Day Schedule'))
+                //                     ->defaultItems(1)
+                //                     ->columns(1)
+                //                     ->createItemButtonLabel(__('Add Training Day')),
+                //             ]),
+                //     ])
+                //     ->action(function (Model $record, array $data): void {
+                //         // Process days data to convert time format if needed
+                //         if (isset($data['days']) && is_array($data['days'])) {
+                //             foreach ($data['days'] as $key => $day) {
+                //                 // If start_time and end_time are datetime strings, convert them to integers
+                //                 if (isset($day['start_time']) && !is_numeric($day['start_time'])) {
+                //                     $time = Carbon::parse($day['start_time']);
+                //                     $data['days'][$key]['start_time'] = $time->hour * 100 + $time->minute;
+                //                 }
+
+                //                 if (isset($day['end_time']) && !is_numeric($day['end_time'])) {
+                //                     $time = Carbon::parse($day['end_time']);
+                //                     $data['days'][$key]['end_time'] = $time->hour * 100 + $time->minute;
+                //                 }
+
+                //                 // Remove any temporary fields we added
+                //                 unset($data['days'][$key]['start_time_int']);
+                //                 unset($data['days'][$key]['end_time_int']);
+                //             }
+                //         }
+
+                //         // Update the record
+                //         $record->update([
+                //             'start_date' => $data['start_date'],
+                //             'end_date' => $data['end_date'],
+                //             'class_room' => $data['class_room'],
+                //             'hours' => $data['hours'],
+                //             'num_of_days' => $data['num_of_days'],
+                //             'plant_id' => $data['plant_id'],
+                //             'days' => $data['days'] ?? [],
+                //         ]);
+
+                //         // Update employee associations
+                //         if (isset($data['employees'])) {
+                //             // Sync employee relationship
+                //             $record->employees()->sync($data['employees']);
+                //         }
+
+                //         Notification::make()
+                //             ->success()
+                //             ->title(__('Run updated successfully'))
+                //             ->send();
+                //     }),
